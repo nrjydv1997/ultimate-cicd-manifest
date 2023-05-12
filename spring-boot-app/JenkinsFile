@@ -13,5 +13,12 @@ pipeline {
         //git branch: 'main', url: 'https://github.com/nrjydv1997/ultimate-cicd.git'
       }
     }
-}
+
+    stage("Build and test"){
+      steps{
+       sh 'ls -ltr'
+        sh 'cd spring-boot-app && mvn clean package'
+      }
+    }
+  }
 }
