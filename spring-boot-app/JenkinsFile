@@ -15,11 +15,11 @@ pipeline {
                 }
             }
         }
-        
+
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        //git branch: 'main', url: 'https://github.com/nrjydv1997/ultimate-cicd.git'
+        git branch: 'main', url: 'https://github.com/nrjydv1997/ultimate-cicd.git'
       }
     }
 
