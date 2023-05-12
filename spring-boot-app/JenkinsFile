@@ -5,7 +5,13 @@ pipeline {
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
     }
   }
-
+stage("Clean the workspace"){
+            steps{
+                script{
+                    cleanWs()
+                }
+            }
+        }
  stages {
     stage('Checkout') {
       steps {
@@ -20,7 +26,7 @@ pipeline {
         sh 'cd spring-boot-app && mvn clean package'
       }
     }
-/*
+
     stage("Static code analysis"){
       environment{
         SONAR_URL = "http://3.108.53.187:9000"
@@ -32,7 +38,7 @@ pipeline {
         }
       }
     }
-*/
+
     stage("Build and push docker image"){
       environment{
         DOCKER_IMAGE="nrjydv1997/ultimate-cicd:${BUILD_NUMBER}"
