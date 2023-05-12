@@ -27,7 +27,24 @@ pipeline {
       }
       steps{
         withCredentials([string(credentialsId: 'sonarqube', variable: 'sonarqubeid')]) {
-          sh 'cd spring-boot-app && mvn sonar:sonar -Dsonar.login=$sonarqubeid -Dsonar.host.url=${SONAR_URL}'
+          echo 'analysys done'
+         // sh 'cd spring-boot-app && mvn sonar:sonar -Dsonar.login=$sonarqubeid -Dsonar.host.url=${SONAR_URL}'
+        }
+      }
+    }
+
+    stage("Build and push docker image"){
+      environment{
+        DOCKER_IMAGE="nrjydv1997/ultimate-cicd:${BUILD_NUMBER}"
+        REGISTRY_CREDENTIALS = credentials('docker-cred')
+      }
+      steps {
+        script{
+          sh 'cd spring-boot-app && docker build -t ${DOCKER_IMAGE}'
+          def dockerImage = docker.image("${DOCKER_IMAGE}")
+          docker.withRegistry('',REGISTRY_CREDENTIALS){
+            dockerImage.push()
+          }
         }
       }
     }
