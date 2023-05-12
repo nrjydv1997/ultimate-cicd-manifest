@@ -7,13 +7,10 @@ pipeline {
   }
 
  stages {
-
-  
-
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        git branch: 'main', url: 'https://github.com/nrjydv1997/ultimate-cicd.git'
+        //git branch: 'main', url: 'https://github.com/nrjydv1997/ultimate-cicd.git'
       }
     }
 
@@ -21,33 +18,6 @@ pipeline {
       steps{
        sh 'ls -ltr'
         sh 'cd spring-boot-app && mvn clean package'
-      }
-    }
-
-    stage("Static code analysis"){
-      environment{
-        SONAR_URL = "http://3.108.53.187:9000"
-      }
-      steps{
-        withCredentials([string(credentialsId: 'sonarqube', variable: 'sonarqubeid')]) {
-          echo 'analysys done'
-         // sh 'cd spring-boot-app && mvn sonar:sonar -Dsonar.login=$sonarqubeid -Dsonar.host.url=${SONAR_URL}'
-        }
-      }
-    }
-
-    stage("Build and push docker image"){
-      environment{
-        DOCKER_IMAGE="nrjydv1997/ultimate-cicd:${BUILD_NUMBER}"
-        REGISTRY_CREDENTIALS = credentials('docker-cred')
-      }
-      steps {
-        script{
-          docker_image = docker.build "${DOCKER_IMAGE}"
-          docker.withRegistry('',REGISTRY_CREDENTIALS){
-            docker_image.push()
-          }
-        }
       }
     }
   }
