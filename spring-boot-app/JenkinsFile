@@ -26,7 +26,7 @@ pipeline {
     stage("Build and test"){
       steps{
        sh 'ls -ltr'
-        sh 'cd spring-boot-app && mvn clean package'
+        sh 'cd ultimate-cicd/spring-boot-app && mvn clean package'
       }
     }
 
